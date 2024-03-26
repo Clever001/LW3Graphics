@@ -1,3 +1,6 @@
+using Microsoft.VisualBasic.Devices;
+using System.Diagnostics;
+
 namespace LW2Graphics
 {
     public partial class Form1 : Form
@@ -94,9 +97,8 @@ namespace LW2Graphics
 
                     newPoint = new Point(curPoint.X, curPoint.Y + 1);
                     if (!checkedPoints.Contains(newPoint)) pointsQueue.Enqueue(newPoint);
-                    
                 }
-                pictureBox.Refresh();
+                pictureBox.Refresh();             
             }
             else
             {
