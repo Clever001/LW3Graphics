@@ -11,6 +11,9 @@ namespace LW2Graphics
         private enum Action { None, Movement, Turn, Resize };
         private Action curAction;
 
+        private Color borderColor = Color.FromArgb(255, 0, 0, 0);
+        //private Color fillColor = Color.FromArgb(255, 255, 255, 255);
+
         public Form1()
         {
             InitializeComponent();
@@ -54,10 +57,52 @@ namespace LW2Graphics
                     g.DrawLine(pen, picturePoints[0], picturePoints[i]);
                 }
             }
-            if (center.X >= 0 && center.Y >= 0 && center.X <= pictureBox.Width && center.Y <= pictureBox.Height)
-                bitmap.SetPixel(center.X, center.Y, Color.Red);
+            // if (center.X >= 0 && center.Y >= 0 && center.X <= pictureBox.Width && center.Y <= pictureBox.Height)
+            //     bitmap.SetPixel(center.X, center.Y, Color.Red);
             g.Flush();
             pictureBox.Invalidate();
+        }
+
+        // ---------- Реализация ведёрка (закрашивания фигуры)
+
+        private void FillFigure(Color newFillColor)
+        {
+            if (center.X >= 0 && center.Y >= 0 && center.X <= pictureBox.Width && center.Y <= pictureBox.Height)
+            {
+                HashSet<Point> checkedPoints = new();
+                Queue<Point> pointsQueue = new();
+                pointsQueue.Enqueue(center);
+                Point curPoint, newPoint;
+                while (pointsQueue.Count != 0)
+                {
+                    curPoint = pointsQueue.Dequeue();
+                    if (checkedPoints.Contains(curPoint))
+                        continue;
+                    checkedPoints.Add(curPoint);
+                    if (bitmap.GetPixel(curPoint.X, curPoint.Y) == borderColor)
+                        continue;
+                    bitmap.SetPixel(curPoint.X, curPoint.Y, newFillColor);
+
+                    newPoint = new Point(curPoint.X - 1, curPoint.Y);
+                    if (!checkedPoints.Contains(newPoint)) pointsQueue.Enqueue(newPoint);
+
+                    newPoint = new Point(curPoint.X, curPoint.Y - 1);
+                    if (!checkedPoints.Contains(newPoint)) pointsQueue.Enqueue(newPoint);
+
+                    newPoint = new Point(curPoint.X + 1, curPoint.Y);
+                    if (!checkedPoints.Contains(newPoint)) pointsQueue.Enqueue(newPoint);
+
+                    newPoint = new Point(curPoint.X, curPoint.Y + 1);
+                    if (!checkedPoints.Contains(newPoint)) pointsQueue.Enqueue(newPoint);
+                    
+                }
+                pictureBox.Refresh();
+            }
+            else
+            {
+                MessageBox.Show("Центр фигуры должен находиться в пределах видимости, чтобы можно было закрасить фигуру.", "ERROR");
+            }
+            GC.Collect();
         }
 
         // ---------- Изменение размеров bitmap
@@ -255,7 +300,7 @@ namespace LW2Graphics
             }
         }
 
-        private void pictureBox_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
@@ -273,6 +318,20 @@ namespace LW2Graphics
                              new(center.X - 100, center.Y + 200),
                              new(center.X - 200, center.Y)];
             DrawFigure();
+        }
+
+        private void FillObjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Сделай проверку на то, что новый цвет не равен черному
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (colorDialog1.Color == Color.Black)
+                {
+                    MessageBox.Show("Нельзя выбрать цвет, совпадающий с цветом границ.");
+                    return;
+                }
+                FillFigure(colorDialog1.Color);
+            }
         }
     }
 }
