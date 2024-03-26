@@ -241,7 +241,7 @@
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(1224, 752);
             Name = "Form1";
-            Text = "ЛР2 Никончук ВИ КЭ-243";
+            Text = "ЛР3 Никончук ВИ КЭ-243";
             SizeChanged += Form1_SizeChanged;
             KeyDown += Form1_KeyDown;
             panel1.ResumeLayout(false);

@@ -72,6 +72,8 @@ namespace LW2Graphics
         {
             if (center.X >= 0 && center.Y >= 0 && center.X <= pictureBox.Width && center.Y <= pictureBox.Height)
             {
+                Stopwatch sw = new();
+                sw.Start();
                 HashSet<Point> checkedPoints = new();
                 Queue<Point> pointsQueue = new();
                 pointsQueue.Enqueue(center);
@@ -98,7 +100,10 @@ namespace LW2Graphics
                     newPoint = new Point(curPoint.X, curPoint.Y + 1);
                     if (!checkedPoints.Contains(newPoint)) pointsQueue.Enqueue(newPoint);
                 }
-                pictureBox.Refresh();             
+                pictureBox.Refresh();
+                sw.Stop();
+                MessageBox.Show($"Всего было потрачено времени: {sw.ElapsedMilliseconds} мск." + Environment.NewLine 
+                    + $"Всего обработано точек: {checkedPoints.Count} шт.", "Сведенья об времени работы алгоритма");
             }
             else
             {
