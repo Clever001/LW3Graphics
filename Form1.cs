@@ -68,10 +68,12 @@ namespace LW2Graphics
 
         // ---------- Реализация ведёрка (закрашивания фигуры)
 
-        private void FillFigure(Color newFillColor)
+        private void FillFigure1(Color newFillColor)
         {
             if (center.X >= 0 && center.Y >= 0 && center.X <= pictureBox.Width && center.Y <= pictureBox.Height)
             {
+                Stopwatch sw = Stopwatch.StartNew();
+
                 HashSet<Point> checkedPoints = new();
                 Queue<Point> pointsQueue = new();
                 pointsQueue.Enqueue(center);
@@ -98,13 +100,45 @@ namespace LW2Graphics
                     newPoint = new Point(curPoint.X, curPoint.Y + 1);
                     if (!checkedPoints.Contains(newPoint)) pointsQueue.Enqueue(newPoint);
                 }
-                pictureBox.Refresh();             
+                pictureBox.Refresh();
+                sw.Stop();
+                MessageBox.Show("Время работы алгоритма: " + sw.ElapsedMilliseconds + " мск.", "Диагностика");
             }
             else
             {
                 MessageBox.Show("Центр фигуры должен находиться в пределах видимости, чтобы можно было закрасить фигуру.", "ERROR");
             }
             GC.Collect();
+        }
+
+        private void FillFigure2(Color newFillColor)
+        {
+            Stopwatch sw = Stopwatch.StartNew();
+
+            for (int y = 0; y != bitmap.Height - 1; y++)
+            {
+                List<Point> points = new();
+
+                for (int x = 0; x != bitmap.Width - 1; x++)
+                {
+                    if (bitmap.GetPixel(x, y) == borderColor)
+                        points.Add(new Point(x, y));
+                }
+
+                for (int i = 0; i < points.Count - 1; i++)
+                {
+                    if (points[i + 1].X - points[i].X > 0)
+                    {
+                        for (int x = points[i].X + 1; x < points[i + 1].X; x++)
+                        {
+                            bitmap.SetPixel(x, y, newFillColor);
+                        }
+                    }
+                }
+            }
+            pictureBox.Refresh();
+            sw.Stop();
+            MessageBox.Show("Время работы алгоритма: " + sw.ElapsedMilliseconds + " мск.", "Диагностика");
         }
 
         // ---------- Изменение размеров bitmap
@@ -322,9 +356,8 @@ namespace LW2Graphics
             DrawFigure();
         }
 
-        private void FillObjectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FillObject1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Сделай проверку на то, что новый цвет не равен черному
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 if (colorDialog1.Color == Color.Black)
@@ -332,7 +365,20 @@ namespace LW2Graphics
                     MessageBox.Show("Нельзя выбрать цвет, совпадающий с цветом границ.");
                     return;
                 }
-                FillFigure(colorDialog1.Color);
+                FillFigure1(colorDialog1.Color);
+            }
+        }
+
+        private void FillObject2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (colorDialog1.Color == Color.Black)
+                {
+                    MessageBox.Show("Нельзя выбрать цвет, совпадающий с цветом границ.");
+                    return;
+                }
+                FillFigure2(colorDialog1.Color);
             }
         }
     }

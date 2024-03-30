@@ -46,8 +46,9 @@
             pictureBox = new PictureBox();
             contextMenuStrip = new ContextMenuStrip(components);
             restoreInitialObject = new ToolStripMenuItem();
-            fillObjectToolStripMenuItem = new ToolStripMenuItem();
+            fillObject1ToolStripMenuItem = new ToolStripMenuItem();
             colorDialog1 = new ColorDialog();
+            fillObject2ToolStripMenuItem = new ToolStripMenuItem();
             panel1.SuspendLayout();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
@@ -212,9 +213,9 @@
             // contextMenuStrip
             // 
             contextMenuStrip.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip.Items.AddRange(new ToolStripItem[] { restoreInitialObject, fillObjectToolStripMenuItem });
+            contextMenuStrip.Items.AddRange(new ToolStripItem[] { restoreInitialObject, fillObject1ToolStripMenuItem, fillObject2ToolStripMenuItem });
             contextMenuStrip.Name = "contextMenuStrip";
-            contextMenuStrip.Size = new Size(256, 48);
+            contextMenuStrip.Size = new Size(256, 92);
             // 
             // restoreInitialObject
             // 
@@ -223,12 +224,19 @@
             restoreInitialObject.Text = "Восстановить начальный объект";
             restoreInitialObject.Click += RestoreInitialObject_Click;
             // 
-            // fillObjectToolStripMenuItem
+            // fillObject1ToolStripMenuItem
             // 
-            fillObjectToolStripMenuItem.Name = "fillObjectToolStripMenuItem";
-            fillObjectToolStripMenuItem.Size = new Size(255, 22);
-            fillObjectToolStripMenuItem.Text = "Закрасить объект";
-            fillObjectToolStripMenuItem.Click += FillObjectToolStripMenuItem_Click;
+            fillObject1ToolStripMenuItem.Name = "fillObject1ToolStripMenuItem";
+            fillObject1ToolStripMenuItem.Size = new Size(255, 22);
+            fillObject1ToolStripMenuItem.Text = "Закрасить объект (1)";
+            fillObject1ToolStripMenuItem.Click += FillObject1ToolStripMenuItem_Click;
+            // 
+            // fillObject2ToolStripMenuItem
+            // 
+            fillObject2ToolStripMenuItem.Name = "fillObject2ToolStripMenuItem";
+            fillObject2ToolStripMenuItem.Size = new Size(255, 22);
+            fillObject2ToolStripMenuItem.Text = "Закрасить объект (2)";
+            fillObject2ToolStripMenuItem.Click += FillObject2ToolStripMenuItem_Click;
             // 
             // Form1
             // 
@@ -241,7 +249,7 @@
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(1224, 752);
             Name = "Form1";
-            Text = "ЛР2 Никончук ВИ КЭ-243";
+            Text = "ЛР3 Никончук ВИ КЭ-243";
             SizeChanged += Form1_SizeChanged;
             KeyDown += Form1_KeyDown;
             panel1.ResumeLayout(false);
@@ -272,7 +280,8 @@
         private Label objectPositionlabel;
         private ContextMenuStrip contextMenuStrip;
         private ToolStripMenuItem restoreInitialObject;
-        private ToolStripMenuItem fillObjectToolStripMenuItem;
+        private ToolStripMenuItem fillObject1ToolStripMenuItem;
         private ColorDialog colorDialog1;
+        private ToolStripMenuItem fillObject2ToolStripMenuItem;
     }
 }
