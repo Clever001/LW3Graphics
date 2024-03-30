@@ -72,8 +72,6 @@ namespace LW2Graphics
         {
             if (center.X >= 0 && center.Y >= 0 && center.X <= pictureBox.Width && center.Y <= pictureBox.Height)
             {
-                Stopwatch sw = Stopwatch.StartNew();
-
                 HashSet<Point> checkedPoints = new();
                 Queue<Point> pointsQueue = new();
                 pointsQueue.Enqueue(center);
@@ -100,9 +98,7 @@ namespace LW2Graphics
                     newPoint = new Point(curPoint.X, curPoint.Y + 1);
                     if (!checkedPoints.Contains(newPoint)) pointsQueue.Enqueue(newPoint);
                 }
-                pictureBox.Refresh();
-                sw.Stop();
-                MessageBox.Show("Время работы алгоритма: " + sw.ElapsedMilliseconds + " мск.", "Диагностика");
+                pictureBox.Refresh();             
             }
             else
             {
